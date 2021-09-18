@@ -1,4 +1,4 @@
-package ru.andreikud.data.model
+package ru.andreikud.simplecachingapp.data.model.dto
 
 import com.google.gson.annotations.SerializedName
 

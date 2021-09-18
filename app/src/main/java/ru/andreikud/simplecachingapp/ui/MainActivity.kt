@@ -1,7 +1,8 @@
-package ru.andreikud.simplecachingapp
+package ru.andreikud.simplecachingapp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import ru.andreikud.simplecachingapp.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

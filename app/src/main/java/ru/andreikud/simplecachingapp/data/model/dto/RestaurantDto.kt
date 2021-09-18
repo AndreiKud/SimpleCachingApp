@@ -1,8 +1,9 @@
-package ru.andreikud.data.model
+package ru.andreikud.simplecachingapp.data.model.dto
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
-data class RestaurantDto(
+class RestaurantDto(
     val address: String? = null,
     val description: String? = null,
     val hours: List<DayDto>? = null,
