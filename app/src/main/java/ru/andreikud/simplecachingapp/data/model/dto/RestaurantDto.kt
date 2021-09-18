@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 class RestaurantDto(
     val address: String? = null,
     val description: String? = null,
-    val hours: List<DayDto>? = null,
+    @SerializedName("hours") val weekSchedule: WeekDto? = null,
     val id: Int? = null,
     val logo: String? = null,
     val name: String? = null,
