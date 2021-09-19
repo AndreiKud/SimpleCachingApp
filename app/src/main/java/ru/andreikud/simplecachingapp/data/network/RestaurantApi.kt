@@ -2,7 +2,7 @@ package ru.andreikud.simplecachingapp.data.network
 
 import retrofit2.http.GET
 import retrofit2.http.Query
-import ru.andreikud.simplecachingapp.data.model.dto.RestaurantDto
+import ru.andreikud.simplecachingapp.data.model.dto.network.RestaurantNetDto
 
 interface RestaurantApi {
 
@@ -12,6 +12,6 @@ interface RestaurantApi {
     }
 
     @GET("restaurant/random_restaurant")
-    suspend fun get(@Query("size") size: Int = DEFAULT_SIZE): List<RestaurantDto>
+    suspend fun get(@Query("size") size: Int = DEFAULT_SIZE): List<RestaurantNetDto>
 
 }

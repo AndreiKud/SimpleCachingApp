@@ -1,30 +1,31 @@
 package ru.andreikud.simplecachingapp.ui.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import ru.andreikud.simplecachingapp.data.RestaurantRepository
 import ru.andreikud.simplecachingapp.data.model.domain.Restaurant
-import ru.andreikud.simplecachingapp.data.model.dto.RestaurantDto
+import ru.andreikud.simplecachingapp.data.model.dto.network.RestaurantNetDto
 import ru.andreikud.simplecachingapp.data.model.toDomain
 import ru.andreikud.simplecachingapp.data.network.RestaurantApi
+import ru.andreikud.simplecachingapp.util.Resource
 import javax.inject.Inject
 import java.net.HttpURLConnection
 import java.net.URL
 
 class MainViewModel @Inject constructor(
+    private val restaurantRepository: RestaurantRepository,
     private val restaurantApi: RestaurantApi
 ) : ViewModel() {
 
-    private val _restaurants = MutableLiveData<List<Restaurant>>()
-    val restaurants: LiveData<List<Restaurant>> = _restaurants
+    val restaurants: Flow<Resource<List<Restaurant>>> = restaurantRepository.getRestaurants()
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            val restaurants = restaurantApi.get().map(RestaurantDto::toDomain)
+            val restaurants = restaurantApi.get().map(RestaurantNetDto::toDomain)
             val restaurantsWithRedirectedLogo = restaurants.map { restaurant ->
                 val redirectedLogo = restaurant.logo?.let {
                     getRedirect(it)

@@ -1,30 +1,28 @@
-package ru.andreikud.simplecachingapp.data.model.domain
+package ru.andreikud.simplecachingapp.data.model.dto.db
 
 import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
-import ru.andreikud.simplecachingapp.data.model.dto.db.DbDtoType
-import ru.andreikud.simplecachingapp.data.model.dto.db.RestaurantDbDto
-import ru.andreikud.simplecachingapp.data.model.dto.network.NetDtoType
+import ru.andreikud.simplecachingapp.data.model.domain.Restaurant
 import ru.andreikud.simplecachingapp.data.model.dto.network.RestaurantNetDto
 
 @Entity(tableName = "restaurant")
-data class Restaurant(
-    val address: String?,
-    val description: String?,
-    val weekSchedule: Week?,
-    val id: Int?,
-    val logo: String?,
-    val name: String?,
-    val phoneNumber: String?,
-    val review: String?,
-    val type: String?,
-    val uid: String?,
-) : DomainType {
-    override fun toDbDto() = RestaurantDbDto(
+class RestaurantDbDto(
+    val address: String? = null,
+    val description: String? = null,
+    val weekSchedule: WeekDbDto? = null,
+    val id: Int? = null,
+    val logo: String? = null,
+    val name: String? = null,
+    val phoneNumber: String? = null,
+    val review: String? = null,
+    val type: String? = null,
+    val uid: String? = null,
+) : DbDtoType {
+    override fun toDomain() = Restaurant(
         address = address,
         description = description,
         logo = logo,
-        weekSchedule = weekSchedule?.toDbDto(),
+        weekSchedule = weekSchedule?.toDomain(),
         name = name,
         id = id,
         phoneNumber = phoneNumber,
