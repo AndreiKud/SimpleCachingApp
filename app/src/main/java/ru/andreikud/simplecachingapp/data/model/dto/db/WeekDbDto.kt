@@ -14,6 +14,7 @@ class WeekDbDto(
     val saturday: DayDbDto? = null,
     val sunday: DayDbDto? = null,
 ) : DbDtoType {
+
     override fun toDomain() = Week(
         monday = monday?.toDomain(),
         tuesday = tuesday?.toDomain(),

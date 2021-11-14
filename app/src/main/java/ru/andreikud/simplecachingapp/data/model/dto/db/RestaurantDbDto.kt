@@ -18,6 +18,7 @@ class RestaurantDbDto(
     val type: String? = null,
     val uid: String? = null,
 ) : DbDtoType {
+
     override fun toDomain() = Restaurant(
         address = address,
         description = description,

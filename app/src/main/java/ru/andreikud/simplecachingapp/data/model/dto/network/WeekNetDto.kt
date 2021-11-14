@@ -12,6 +12,7 @@ class WeekNetDto(
     val saturday: DayNetDto? = null,
     val sunday: DayNetDto? = null,
 ) : NetDtoType {
+
     override fun toDomain() = Week(
         monday = monday?.toDomain(),
         tuesday = tuesday?.toDomain(),

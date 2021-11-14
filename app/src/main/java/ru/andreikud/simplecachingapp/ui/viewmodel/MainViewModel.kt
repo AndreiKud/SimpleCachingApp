@@ -1,48 +1,29 @@
 package ru.andreikud.simplecachingapp.ui.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ru.andreikud.simplecachingapp.data.RestaurantRepository
 import ru.andreikud.simplecachingapp.data.model.domain.Restaurant
-import ru.andreikud.simplecachingapp.data.model.dto.network.RestaurantNetDto
-import ru.andreikud.simplecachingapp.data.model.toDomain
-import ru.andreikud.simplecachingapp.data.network.RestaurantApi
 import ru.andreikud.simplecachingapp.util.Resource
 import javax.inject.Inject
-import java.net.HttpURLConnection
-import java.net.URL
 
 class MainViewModel @Inject constructor(
-    private val restaurantRepository: RestaurantRepository,
-    private val restaurantApi: RestaurantApi
+    private val restaurantsRepository: RestaurantRepository
 ) : ViewModel() {
 
-    val restaurants: Flow<Resource<List<Restaurant>>> = restaurantRepository.getRestaurants()
+    private val _restaurants = MutableStateFlow<Resource<List<Restaurant>>>(Resource.Loading())
+    val restaurants = _restaurants.asStateFlow()
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            val restaurants = restaurantApi.get().map(RestaurantNetDto::toDomain)
-            val restaurantsWithRedirectedLogo = restaurants.map { restaurant ->
-                val redirectedLogo = restaurant.logo?.let {
-                    getRedirect(it)
-                }
-                restaurant.copy(logo = redirectedLogo)
+            val data = restaurantsRepository.getRestaurants()
+            data.collect { resource ->
+                _restaurants.value = resource
             }
-            _restaurants.postValue(restaurantsWithRedirectedLogo)
         }
-    }
-
-    private suspend fun getRedirect(originUrl: String): String {
-        val url = URL(originUrl)
-        val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-        urlConnection.instanceFollowRedirects = false
-        val result = url.authority + urlConnection.getHeaderField("Location")
-        Log.d(TAG, "getRedirect: $result")
-        return result
     }
 }
 

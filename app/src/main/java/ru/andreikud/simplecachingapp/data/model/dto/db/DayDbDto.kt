@@ -11,6 +11,7 @@ class DayDbDto(
     val isClosed: Boolean? = null,
     val opensAt: String? = null,
 ) : DbDtoType {
+
     override fun toDomain() = Day(
         closesAt = closesAt,
         opensAt = opensAt,

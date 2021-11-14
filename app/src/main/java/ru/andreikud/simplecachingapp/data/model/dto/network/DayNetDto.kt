@@ -9,6 +9,7 @@ class DayNetDto(
     @SerializedName("is_closed") val isClosed: Boolean? = null,
     @SerializedName("opens_at") val opensAt: String? = null,
 ) : NetDtoType {
+
     override fun toDomain() = Day(
         closesAt = closesAt,
         opensAt = opensAt,
